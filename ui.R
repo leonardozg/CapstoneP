@@ -1,5 +1,4 @@
-#    http://shiny.rstudio.com/
-#
+
 
 library(shiny)
 
