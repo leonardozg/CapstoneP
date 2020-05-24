@@ -14,9 +14,9 @@ library(tm)
 library(RWeka)
 library(data.table)
 library(dplyr)
-source('~/skydrive/1000-Capacitacion/2015-Coursera/11-Capstone/Word Pred.R')
+source('./Word Pred.R')
 
-# Define server logic required to draw a histogram
+# Define server logic
 shinyServer(function(input, output) {
     output$inputValue <- renderText({input$Tcir})
     output$prediction <- renderText({proc(input$Tcir)})
