@@ -25,7 +25,7 @@ news <- readLines(news, encoding="UTF-8", skipNul = TRUE, warn = TRUE)
 twitt <- readLines(twitt,encoding="UTF-8", skipNul = TRUE, warn = TRUE)
 
 set.seed(1130)
-samp_size = 5000
+samp_size = 1000
 
 blogs_samp <- blogs[sample(1:length(blogs),samp_size)]
 news_samp <- news[sample(1:length(news),samp_size)]
@@ -65,6 +65,8 @@ wc2 <- wordcloud2(gram2d[1:50,],size=0.3,shape = 'circle', rotateRatio = 0, grid
 
 
 #use a tokenizer to transform paragraphs in words to count and read by algorithm
+
+
 uniGramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 1))
 biGramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
 triGramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 3, max = 3))
@@ -75,19 +77,13 @@ twoGM <- TermDocumentMatrix(corp, control = list(tokenize = biGramTokenizer))
 threeGM <- TermDocumentMatrix(corp, control = list(tokenize = triGramTokenizer))
 fourGM <- TermDocumentMatrix(corp, control = list(tokenize = quadGramTokenizer))
 
-#Find the most frequent terms (FourGrams)
-freqTerms4 <- findFreqTerms(fourGM, lowfreq = 1)
-termFreq4 <- rowSums(as.matrix(fourGM[freqTerms4,]))
-termFreq4 <- data.frame(quadgram=names(termFreq4), frequency=termFreq4)
-quadgramlist <- setDT(termFreq4)
-save(quadgramlist,file="quadgram.Rds")
-
-#Find the most frequent terms (ThreeGrams)
-freqTerms3 <- findFreqTerms(threeGM, lowfreq = 2)
-termFreq3 <- rowSums(as.matrix(threeGM[freqTerms3,]))
-termFreq3 <- data.frame(trigram=names(termFreq3), frequency=termFreq3)
-trigramlist <- setDT(termFreq3)
-save(trigramlist,file="trigram.Rds")
+#Find the most frequently terms (Unigrams)
+freqTerms1 <- findFreqTerms(oneGM, lowfreq = 5)
+termFreq1 <- rowSums(as.matrix(oneGM[freqTerms1,]))
+termFreq1 <- data.frame(unigram=names(termFreq1), frequency=termFreq1)
+termFreq1 <- termFreq1[order(-termFreq1$frequency),]
+unigramlist <- setDT(termFreq1)
+write.csv(unigramlist,file="unigram.csv")
 
 #Find the most frequent terms (BiGrams)
 freqTerms2 <- findFreqTerms(twoGM, lowfreq = 3)
@@ -95,21 +91,22 @@ termFreq2 <- rowSums(as.matrix(twoGM[freqTerms2,]))
 termFreq2 <- data.frame(bigram=names(termFreq2), frequency=termFreq2)
 termFreq2 <- termFreq2[order(-termFreq2$frequency),]
 bigramlist <- setDT(termFreq2)
-save(bigramlist,file="bigram.Rds")
+write.csv(bigramlist,file="bigram.csv")
 
-#Find the most frequently terms (Unigrams)
-freqTerms1 <- findFreqTerms(oneGM, lowfreq = 5)
-termFreq1 <- rowSums(as.matrix(oneGM[freqTerms1,]))
-termFreq1 <- data.frame(unigram=names(termFreq1), frequency=termFreq1)
-termFreq1 <- termFreq1[order(-termFreq1$frequency),]
-unigramlist <- setDT(termFreq1)
-save(unigramlist,file="unigram.Rds")
-
+#Find the most frequent terms (ThreeGrams)
+freqTerms3 <- findFreqTerms(threeGM, lowfreq = 2)
+termFreq3 <- rowSums(as.matrix(threeGM[freqTerms3,]))
+termFreq3 <- data.frame(trigram=names(termFreq3), frequency=termFreq3)
+trigramlist <- setDT(termFreq3)
+write.csv(trigramlist,file="trigram.csv")
 
 
-
-
-
+#Find the most frequent terms (FourGrams)
+freqTerms4 <- findFreqTerms(fourGM, lowfreq = 1)
+termFreq4 <- rowSums(as.matrix(fourGM[freqTerms4,]))
+termFreq4 <- data.frame(quadgram=names(termFreq4), frequency=termFreq4)
+quadgramlist <- setDT(termFreq4)
+write.csv(quadgramlist,file="quadgram.csv")
 
 timecomp <- proc.time() -ptm
 
