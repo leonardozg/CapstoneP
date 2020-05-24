@@ -1,0 +1,59 @@
+---
+title: "Capstone Project"
+author: "Leonardo Zepeda"
+date:   "5/23/2020"
+output: "slidy_presentation"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## The Star Saucer (Abstract)
+
+The goal of this project is to build and evaluate a Natural Lenguage Processing (NLP) predictive model. Using N-gram and other backoff models I have built and evaluated a NLP predictive model. This presentation shows an efficient and accurate model to predict the next word of an input phrase based on provided data sets.
+
+Model is also evaluated for efficiency and accuracy - using timing software to evaluate the computational complexity of the model.
+
+The source data for this project can be found at: https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip
+
+Shiny App can be found at: https://value-edge.shinyapps.io/Capstone/
+
+Source code is located on GitHub at: https://github.com/leonardozg/CapstoneP
+
+## The Recipe (Data Processing)
+
+### Data Collection and Preparation
+Data was scraped from blogs, twitter and the news. This data was provided as part of the assignment
+The data was read into R from the original sources.
+Data cleaning was performed by stripping out of numbers and punctuation, changing all text to lowercase, removing the whitespace, and forcing R to recognize natural lenguage in English.
+With above it was possible to remove "stopwords" in English as well
+
+### The Prediction Algorithm
+
+With the Corpus of data in place a sequence of items are collected form a reasonable sample of the data frame (1500 rows of each group). N-grams were built. The N refers to the number of items within the sequence. For this project, bigrams, trigrams and quadgrams were used. The N-grams were sorted and the metadata saved for further reference.
+
+As data sources and also our own sample process forces our dataset to refer to a particular subset, a Wordcloud for the first 30 UniGrams and another for the first 30 BiGrams were ploted, to provide a guide to the final user of our predictor app about where to start and also about the limitations of our predictive model.
+
+## The Cooking (The Prediction Model)
+
+Our Prediction Model is Based on the Katz Back-off algorithm. 
+
+The process works as follows:
+
+The .rds files containing the metadata are loaded.
+Process starts with Quadgrams using the first three words provided by the user.
+If no match is found, then,  trigram is used. If there is still no match found, bigram is used next. When no match is found, the application will return a comment that no match is found due to the small sample size.
+
+## Presentation of the Dish (User Interface)
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('./www/ui.png')
+```
+
+## Tasting and Aderesing (Using the Model):
+
+
+https://value-edge.shinyapps.io/Capstone/
+
+
