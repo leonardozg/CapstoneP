@@ -4,6 +4,7 @@ library(shiny)
 
 ui <- fluidPage(
     
+    
     #titlePanel("Word Prediction"),
     
     sidebarLayout(
